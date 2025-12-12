@@ -49,21 +49,6 @@ def load_graphs(filename):
         data = json.load(f)
     return create_graphs(data)
 
-split_graphs              = load_graphs("contact_pattern_2012.json")
-split2_graphs             = load_graphs("contact_pattern_2012.json")
-merge_graphs              = load_graphs("contact_pattern_2012.json")
-join_graphs               = load_graphs("contact_pattern_2012.json")
-join_stable_graphs        = load_graphs("contact_pattern_2012.json")
-stagnation_graphs         = load_graphs("contact_pattern_2012.json")
-trend_graphs              = load_graphs("contact_pattern_2012.json")
-two_groups_graphs         = load_graphs("contact_pattern_2012.json")
-three_groups_graphs       = load_graphs("contact_pattern_2012.json")
-three_groups_new_graphs   = load_graphs("contact_pattern_2012.json")
-interpolated_graphs       = load_graphs("contact_pattern_2012.json")
-extended_split_graphs     = load_graphs("contact_pattern_2012.json")
-# just for testing
-
-'''
 # Loading all datasets
 split_graphs              = load_graphs("split_combined_network_data.json")
 split2_graphs             = load_graphs("split2_combined_network_data.json")
@@ -77,6 +62,3 @@ three_groups_graphs       = load_graphs("three_groups_combined_network_data.json
 three_groups_new_graphs   = load_graphs("three_groups_new_combined_network_data.json")
 interpolated_graphs       = load_graphs("interpolated_network_data.json")
 extended_split_graphs     = load_graphs("extended_network_data.json")
-
-
-'''
