@@ -541,3 +541,52 @@ def get_tunable_priority_bfs_ordering(graphs, start_nodes=None, stats=None, w=1.
                     heapq.heappush(pq, (pr, nbr))
         bfs_ordering[timestamp] = ordering
     return bfs_ordering
+
+
+def get_priority_bfs_ordering_2(graphs, start_nodes=None, stats=None):
+    """
+    Priority BFS that ensures all nodes are visited, even in disconnected graphs.
+    """
+    bfs_ordering = {}
+
+    if stats is None:
+        # Assuming compute_global_stats is available in your scope
+        stats = compute_global_stats(graphs)
+
+    for timestamp, graph in graphs.items():
+        sorted_nodes = sorted(graph.nodes)
+        visited = set()
+        ordering = []
+
+        # We define the 'worker' function, similar to your standard BFS
+        def process_component(seed_node):
+            pq = []  # Priority queue (min-heap)
+            # Push (priority, node). Seed node gets priority 0 to start.
+            heapq.heappush(pq, (0, seed_node))
+            
+            while pq:
+                _, current_node = heapq.heappop(pq)
+                if current_node not in visited:
+                    visited.add(current_node)
+                    ordering.append(current_node)
+
+                    # Get neighbors and calculate their priorities
+                    for neighbor in graph.neighbors(current_node):
+                        if neighbor not in visited:
+                            # Ensure calculate_priority is defined/imported
+                            priority = calculate_priority(graph, current_node, neighbor, stats)
+                            heapq.heappush(pq, (priority, neighbor))
+
+        # 1. Start with the designated start node if it exists
+        start_node = start_nodes.get(timestamp) if start_nodes and timestamp in start_nodes else None
+        if start_node and start_node in graph.nodes:
+            process_component(start_node)
+
+        # 2. THE FIX: Perform BFS from any remaining unvisited nodes (the "islands")
+        for node in sorted_nodes:
+            if node not in visited:
+                process_component(node)
+
+        bfs_ordering[timestamp] = ordering
+
+    return bfs_ordering
