@@ -545,7 +545,7 @@ def get_tunable_priority_bfs_ordering(graphs, start_nodes=None, stats=None, w=1.
 
 def get_priority_bfs_ordering_2(graphs, start_nodes=None, stats=None):
     """
-    Priority BFS that ensures all nodes are visited, even in disconnected graphs.
+    An edited version of Priority BFS that ensures all nodes are visited, even in disconnected graphs.
     """
     bfs_ordering = {}
 

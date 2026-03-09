@@ -29,6 +29,15 @@ def draw_networkrug(graphs, color_encoding='closeness_centrality', colormap='tur
         ordering = get_DFS_ordering(graphs, start_nodes)
     elif order == "degree":
         ordering = get_centrality_ordering(graphs, centrality_measure="degree")
+    # Miranda additions
+    elif order == "centrality_closeness":
+        ordering = get_centrality_ordering(graphs, centrality_measure="closeness")
+    elif order == "centrality_betweenness":
+        ordering = get_centrality_ordering(graphs, centrality_measure="betweenness")
+    elif order == "centrality_eigenvector":
+        ordering = get_centrality_ordering(graphs, centrality_measure="eigenvector")
+    elif order == "community":
+        ordering = get_community_ordering(graphs, sorting_key='id')
     else:
         ordering = get_priority_bfs_ordering(graphs, start_nodes)
 
