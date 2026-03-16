@@ -119,7 +119,9 @@ def calculate_priority(graph, current_node, neighbor, stats):
     
     #print("score:", score)
     # Negative because min-heap (lower priority = higher value)
-    return score_old
+    #return score_old
+    # Miranda addition
+    return score
 
 def calculate_priority_normalized(graph, current, neigh, w, d, c, stats):
     """
@@ -210,6 +212,42 @@ def get_start_node(graphs, metric='degree', mode='highest'):
     # same start node for every timestamp
     return {ts: chosen for ts in timestamps}
 
+# Miranda addition
+def get_start_node_local(graphs, metric='degree', mode='highest'):
+    """
+    Select a start node per timestamp, chosen as the extreme node
+    within that specific graph.
+    
+    Returns a dict mapping each timestamp to its locally chosen node.
+
+    mode: "highest" / "lowest"
+    """
+    if not graphs:
+        raise ValueError("Empty graph dictionary provided")
+
+    def compute_metric(G):
+        if metric == 'degree':
+            return dict(G.degree())
+        elif metric == 'closeness_centrality':
+            return nx.closeness_centrality(G)
+        elif metric == 'betweenness_centrality':
+            return nx.betweenness_centrality(G)
+        elif metric == 'eigenvector_centrality':
+            return nx.eigenvector_centrality(G, max_iter=10000, tol=1e-6, weight='weight')
+        else:
+            raise ValueError(f"Unsupported metric: {metric}")
+
+    result = {}
+    for ts, G in graphs.items():
+        values = compute_metric(G)
+        if not values:
+            continue
+        if 'highest' in mode:
+            result[ts] = max(values, key=values.get)
+        else:
+            result[ts] = min(values, key=values.get)
+
+    return result
 
 
 def get_DFS_ordering(graphs, start_nodes=None):
