@@ -6,7 +6,6 @@ plt_out/
 
 *.pkl
 *.parquet
-*.png
 *.xml
 *.iml
 
